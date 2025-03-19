@@ -13,7 +13,7 @@ import { ScreenContent } from '~/components/ScreenContent';
 
 export default function Home() {
   const router = useRouter();
-  const image = require('../../assets/images/teste.png');
+  const image = require('../../assets/images/background.png');
 
   return (
     <>
