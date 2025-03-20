@@ -11,7 +11,7 @@ const progress = 0.5;
 const angle = 2.2 * Math.PI * progress - Math.PI / 2;
 const indicatorX = size / 2 + radius * Math.cos(angle);
 const indicatorY = size / 2 + radius * Math.sin(angle);
-const image = require('../assets/images/LogoRadio.png');
+const image = require('../assets/images/teste1.png');
 
 export const RadioTopScreen = ({}) => {
   return (
@@ -59,7 +59,7 @@ export const RadioTopScreen = ({}) => {
         </Svg>
 
         <View style={styles.imageContainer}>
-          <Image source={image} style={styles.image} />
+          <Image source={image} style={styles.image} resizeMode="cover" />
         </View>
       </View>
     </View>
@@ -68,25 +68,16 @@ export const RadioTopScreen = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 100,
   },
-  separator: {
-    height: 1,
-    width: '80%',
-    backgroundColor: 'gray',
-    marginVertical: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+
   progressContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
   },
+
   imageContainer: {
     position: 'absolute',
     width: 200,
@@ -94,7 +85,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     overflow: 'hidden',
     backgroundColor: 'white',
+    justifyContent: 'center',
   },
+
   image: {
     width: '100%',
     height: '100%',

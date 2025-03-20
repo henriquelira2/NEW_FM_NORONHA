@@ -1,6 +1,8 @@
 import { Stack, useRouter } from 'expo-router';
 import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 
+import { MediaProvider } from '~/components/MediaProvider';
+import MediaControls from '~/components/MidiaControls';
 import { RadioTopScreen } from '~/components/RadioTopScreen';
 
 export default function Sound() {
@@ -20,6 +22,11 @@ export default function Sound() {
       <SafeAreaView style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
           <RadioTopScreen />
+
+          <MediaProvider>
+            <MediaControls />
+          </MediaProvider>
+
           {/*<Button title="Ir para Tab Home" onPress={() => router.push('/(tabs)')} />*/}
         </ImageBackground>
       </SafeAreaView>
@@ -30,9 +37,10 @@ export default function Sound() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    borderWidth: 1,
   },
   image: {
     flex: 1,
-    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 });
