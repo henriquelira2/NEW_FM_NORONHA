@@ -1,9 +1,12 @@
 import { Stack, useRouter } from 'expo-router';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 
-import { ScreenContent } from '~/components/ScreenContent';
+import { RadioTopScreen } from '~/components/RadioTopScreen';
+
 export default function Sound() {
   const router = useRouter();
+  const image = require('../../assets/images/teste4.png');
+
   return (
     <>
       <Stack.Screen
@@ -14,10 +17,12 @@ export default function Sound() {
           headerTintColor: '#fff',
         }}
       />
-      <View style={styles.container}>
-        <ScreenContent path="app/(tabs)/two.tsx" title="Tab Two" />
-        <Button title="Ir para Tab Home" onPress={() => router.push('/(tabs)')} />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+          <RadioTopScreen />
+          {/*<Button title="Ir para Tab Home" onPress={() => router.push('/(tabs)')} />*/}
+        </ImageBackground>
+      </SafeAreaView>
     </>
   );
 }
@@ -25,6 +30,9 @@ export default function Sound() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+  },
+  image: {
+    flex: 1,
+    alignItems: 'center',
   },
 });

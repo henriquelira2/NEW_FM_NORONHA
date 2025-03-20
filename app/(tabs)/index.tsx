@@ -13,7 +13,7 @@ import { ScreenContent } from '~/components/ScreenContent';
 
 export default function Home() {
   const router = useRouter();
-  const image = require('../../assets/images/background.png');
+  const image = require('../../assets/images/teste.png');
 
   return (
     <>
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#6200ea',
+    backgroundColor: '#0010eadd',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 20,
