@@ -28,10 +28,14 @@ export default function Home() {
       />
       <SafeAreaView style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-          <ScreenContent path="app/(tabs)/index.tsx" title="Tab One" />
+          <ScreenContent
+            title="Sintonize Noronha"
+            subtitle="Curta o melhor da rádio de Fernando de Noronha, onde quer que esteja !"
+            imageSource={require('../../assets/images/LogoGolfinho.png')}
+          />
 
           <TouchableOpacity style={styles.button} onPress={() => router.push('/sound')}>
-            <Text style={styles.buttonText}>Ir para Tab radio</Text>
+            <Text style={styles.buttonText}>Vamos Começar</Text>
           </TouchableOpacity>
 
           <View style={styles.spacer} />
