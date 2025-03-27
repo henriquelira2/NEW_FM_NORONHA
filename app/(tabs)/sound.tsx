@@ -3,6 +3,7 @@ import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 
 import { MediaProvider } from '~/components/MediaProvider';
 import MediaControls from '~/components/MidiaControls';
+import RadioHeader from '~/components/RadioHeader';
 import { RadioTopScreen } from '~/components/RadioTopScreen';
 
 export default function Sound() {
@@ -20,6 +21,7 @@ export default function Sound() {
       />
       <SafeAreaView style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+          <RadioHeader />
           <RadioTopScreen />
 
           <MediaProvider>
