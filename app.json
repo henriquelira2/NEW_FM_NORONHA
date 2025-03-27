@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "teste",
-    "slug": "teste",
-    "version": "1.0.0",
+    "name": "FM Noronha",
+    "slug": "FM-Noronha",
+    "version": "2.0.1",
     "scheme": "/(tabs)/sound",
     "web": {
       "bundler": "metro",
