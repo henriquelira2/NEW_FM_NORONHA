@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
 
 import { MediaProvider } from '~/components/MediaProvider';
@@ -6,8 +6,7 @@ import MediaControls from '~/components/MidiaControls';
 import { RadioTopScreen } from '~/components/RadioTopScreen';
 
 export default function Sound() {
-  const router = useRouter();
-  const image = require('../../assets/images/teste4.png');
+  const image = require('../../assets/images/Bacground-Radio.png');
 
   return (
     <>

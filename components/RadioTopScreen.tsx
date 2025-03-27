@@ -11,7 +11,7 @@ const progress = 0.5;
 const angle = 2.2 * Math.PI * progress - Math.PI / 2;
 const indicatorX = size / 2 + radius * Math.cos(angle);
 const indicatorY = size / 2 + radius * Math.sin(angle);
-const image = require('../assets/images/teste1.png');
+const image = require('../assets/images/RadioTop-icon.png');
 
 export const RadioTopScreen = ({}) => {
   return (

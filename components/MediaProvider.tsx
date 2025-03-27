@@ -1,18 +1,80 @@
 /* eslint-disable prettier/prettier */
 import AntDesign from '@expo/vector-icons/AntDesign';
-import React, { createContext, useContext, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import TrackPlayer, { Capability, State, Event } from 'react-native-track-player';
 
-const MediaContext = createContext<{ play: () => void; pause: () => void } | null>(null);
+const MediaContext = createContext<{
+  play: () => void;
+  pause: () => void;
+  isPlaying: boolean;
+} | null>(null);
 
 export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const play = () => setIsPlaying(true);
-  const pause = () => setIsPlaying(false);
+  useFocusEffect(
+    useCallback(() => {
+      const checkPlaybackState = async () => {
+        const playbackState = await TrackPlayer.getPlaybackState();
+        setIsPlaying(playbackState.state === State.Playing); 
+      };
+
+      checkPlaybackState();
+
+      const listener = TrackPlayer.addEventListener(Event.PlaybackState, checkPlaybackState); 
+
+      return () => {
+        listener.remove();
+      };
+    }, [])
+  );
+
+  useEffect(() => {
+    async function setupPlayer() {
+      await TrackPlayer.setupPlayer();
+      await TrackPlayer.updateOptions({
+        stoppingAppPausesPlayback: false,
+        capabilities: [Capability.Play, Capability.Pause, Capability.Stop],
+        compactCapabilities: [Capability.Play, Capability.Pause],
+      });
+
+      const streamUrl = process.env.STREAM_URL || 'https://default-stream-url.com';
+      await TrackPlayer.add({
+        id: '1',
+        url: streamUrl,
+        title: 'FM Noronha',
+        artist: 'Noronha Radio',
+        artwork: 'https://img.radios.com.br/radio/lg/radio217106_1684426096.jpg',
+      });
+    }
+    setupPlayer();
+
+    const onPlaybackStateChange = (playbackState: { state: State }) => {
+      setIsPlaying(playbackState.state === State.Playing);
+    };
+
+    const listener = TrackPlayer.addEventListener(Event.PlaybackState, onPlaybackStateChange);
+
+    return () => {
+      listener.remove();
+      TrackPlayer.pause();
+    };
+  }, []);
+
+  const play = async () => {
+    await TrackPlayer.play();
+    setIsPlaying(true);
+  };
+
+  const pause = async () => {
+    await TrackPlayer.pause();
+    setIsPlaying(false);
+  };
 
   return (
-    <MediaContext.Provider value={{ play, pause }}>
+    <MediaContext.Provider value={{ play, pause, isPlaying }}>
       <View style={styles.container}>
         <Image
           source={
@@ -29,6 +91,7 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           </TouchableOpacity>
 
           <Text style={styles.frequency}>96.9</Text>
+
           <TouchableOpacity style={styles.button}>
             <AntDesign name="stepforward" size={18} color="white" />
           </TouchableOpacity>
@@ -74,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   frequency: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     marginHorizontal: 20,
     color: '#ffffff',

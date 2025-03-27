@@ -1,13 +1,14 @@
 /* eslint-disable prettier/prettier */
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { useMedia } from './MediaProvider';
 
 const MediaControls: React.FC = () => {
   const { play, pause } = useMedia();
-  const [isPlaying, setIsPlaying] = useState(false);
+
+  const { isPlaying } = useMedia();
 
   const togglePlayPause = () => {
     if (isPlaying) {
@@ -15,9 +16,7 @@ const MediaControls: React.FC = () => {
     } else {
       play();
     }
-    setIsPlaying(!isPlaying);
   };
-
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -96,3 +95,4 @@ const styles = StyleSheet.create({
 });
 
 export default MediaControls;
+

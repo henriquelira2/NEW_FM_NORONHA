@@ -3,7 +3,7 @@
     "name": "teste",
     "slug": "teste",
     "version": "1.0.0",
-    "scheme": "teste",
+    "scheme": "/(tabs)/sound",
     "web": {
       "bundler": "metro",
       "output": "static",

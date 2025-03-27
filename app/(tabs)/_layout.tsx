@@ -23,9 +23,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="sound"
         options={{
-          title: 'Tab Two',
+          title: 'Tab sound',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
