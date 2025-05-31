@@ -39,15 +39,30 @@ export default function SobreApp() {
           <TouchableOpacity
             onPress={() => setVersao1Visible(!versao1Visible)}
             style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Versão 2</Text>
+            <Text style={styles.sectionTitle}>Versão 2 </Text>
+            <Text style={styles.subTitle}>(31/05/2025) </Text>
             <AntDesign name={versao1Visible ? 'up' : 'down'} size={20} color="black" />
           </TouchableOpacity>
           {versao1Visible && (
             <View style={styles.infoContainer}>
+              <Text style={styles.role}>Administrador Geral Adjunto</Text>
+              <Text style={styles.name}>Sr. Virgílio de Almeida Ignácio de Oliveira</Text>
+
+              <Text style={styles.role}>Gerência de Comunicação</Text>
+              <Text style={styles.name}>Léa Renata Melo de Medeiros</Text>
+
+              <Text style={styles.role}>Assessor de Comunicação</Text>
+              <Text style={styles.name}>Domingos Sávio de Godoy</Text>
+
+              <Text style={styles.role}>Superintendente Administrativo, Financeiro e TI</Text>
+              <Text style={styles.name}>Eliandro Rafael Torres Ferreira</Text>
+
               <Text style={styles.role}>Gerência de T.I</Text>
               <Text style={styles.name}>Ari Alves de Lucena</Text>
+
               <Text style={styles.role}>Desenvolvedor</Text>
               <Text style={styles.name}>Henrique Lira da Silva</Text>
+
               <Text style={styles.role}>Desenvolvedor e Analista de Dados</Text>
               <Text style={styles.name}>Raimundo Marcelo Nogueira Coimbra</Text>
             </View>
@@ -57,6 +72,7 @@ export default function SobreApp() {
             onPress={() => setVersao2Visible(!versao2Visible)}
             style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Versão 1</Text>
+            <Text style={styles.subTitle}>(24/10/2024) </Text>
             <AntDesign name={versao2Visible ? 'up' : 'down'} size={20} color="black" />
           </TouchableOpacity>
           {versao2Visible && (
@@ -103,6 +119,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
+  subTitle: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: 'black',
+    marginLeft: 100,
+  },
+
   scrollContainer: {
     width: '100%',
     alignItems: 'center',

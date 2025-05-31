@@ -69,7 +69,7 @@ export const RadioTopScreen = ({}) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
-    marginTop: 100,
+    marginTop: 10,
   },
 
   progressContainer: {

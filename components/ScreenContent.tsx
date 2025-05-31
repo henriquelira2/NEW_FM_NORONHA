@@ -2,7 +2,7 @@ import { Text, View, Image, StyleSheet } from 'react-native';
 
 type ScreenContentProps = {
   title: string;
-  subtitle: string;
+  text: string;
 
   imageSource: any;
   children?: React.ReactNode;
@@ -10,7 +10,7 @@ type ScreenContentProps = {
 
 export const ScreenContent = ({
   title,
-  subtitle,
+  text,
 
   imageSource,
   children,
@@ -19,7 +19,7 @@ export const ScreenContent = ({
     <View style={styles.container}>
       <Image source={imageSource} style={styles.image} />
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text style={styles.text}>{text}</Text>
 
       {children}
     </View>
@@ -48,10 +48,18 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   subtitle: {
+    fontSize: 28,
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 10,
+    bottom: '15%',
+  },
+  text: {
     fontSize: 18,
     color: 'white',
     textAlign: 'center',
     marginTop: 10,
     bottom: '15%',
+    width: '90%',
   },
 });

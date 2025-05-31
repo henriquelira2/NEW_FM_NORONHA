@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { useFocusEffect } from '@react-navigation/native';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet, Text, Dimensions } from 'react-native';
 import TrackPlayer, { Capability, State, Event } from 'react-native-track-player';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const MediaContext = createContext<{ play: () => void; pause: () => void; isPlaying: boolean } | null>(null);
 
@@ -37,7 +38,7 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           compactCapabilities: [Capability.Play, Capability.Pause],
         });
 
-        const streamUrl = process.env.STREAM_URL || 'https://default-stream-url.com';
+        const streamUrl = 'https://stm1.xcast.com.br:12212/stream';
         const response = await fetch(streamUrl, { method: 'HEAD' });
 
         if (!response.ok) {
@@ -51,7 +52,7 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           artist: 'Noronha Radio',
           artwork: 'https://img.radios.com.br/radio/lg/radio217106_1684426096.jpg',
         });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         setRadioStatus('Não foi possível conectar à rádio no momento. Isso pode ser devido a problemas na conexão com a internet ou a uma instabilidade temporária no servidor. Tente novamente mais tarde.');
       }
@@ -92,10 +93,14 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           }
           style={styles.gif}
         />
+        <View style={styles.radio}>
+          {radioStatus === '96.9' && <Text style={styles.icon}  ><MaterialIcons name="music-note" size={24} color="white" /></Text>}
+          <Text style={styles.frequency} >{radioStatus}</Text>
+          {radioStatus === '96.9' && <Text style={styles.icon} ><MaterialIcons name="music-note" size={24} color="white" /></Text>}
 
-        <View style={styles.controls}>
-          <Text style={styles.frequency}>{radioStatus}</Text>
         </View>
+
+
       </View>
       {children}
     </MediaContext.Provider>
@@ -109,39 +114,37 @@ export const useMedia = () => {
   }
   return context;
 };
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 10,
-    marginTop: 20,
+    marginTop: 50,
   },
   gif: {
     width: 500,
     height: 100,
+    marginBottom: 50,
   },
-  controls: {
+  radio: {
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    width: 340,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    height: height * 0.1,
   },
-  button: {
-    padding: 10,
-    borderRadius: 30,
-    borderColor: '#ffffff',
-    borderWidth: 1,
-  },
-  buttonText: {
-    fontSize: 24,
+
+  icon: {
+    fontSize: 30,
+    justifyContent: 'flex-start',
+    height: height * 0.2 ,
   },
   frequency: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginHorizontal: 20,
     color: '#ffffff',
     textAlign: 'center',
-    width: 350,
-    height: 150,
+    height: height * 0.2,
   },
 });

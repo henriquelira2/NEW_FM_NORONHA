@@ -30,8 +30,8 @@ export default function Home() {
       <SafeAreaView style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
           <ScreenContent
-            title="Sintonize Noronha"
-            subtitle="Curta o melhor da rádio de Fernando de Noronha, onde quer que esteja !"
+            title="FM Noronha"
+            text="Curta o melhor da rádio de Fernando de Noronha, onde quer que esteja !"
             imageSource={require('../../assets/images/LogoGolfinho.png')}
           />
 
