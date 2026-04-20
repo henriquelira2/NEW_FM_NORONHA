@@ -38,7 +38,7 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           compactCapabilities: [Capability.Play, Capability.Pause],
         });
 
-        const streamUrl = 'https://stm1.xcast.com.br:12212/stream';
+        const streamUrl = 'https://server22.srvsh.com.br:6752/stream';
         const response = await fetch(streamUrl, { method: 'HEAD' });
 
         if (!response.ok) {
@@ -54,7 +54,7 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         });
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        setRadioStatus('Não foi possível conectar à rádio no momento. Isso pode ser devido a problemas na conexão com a internet ou a uma instabilidade temporária no servidor. Tente novamente mais tarde.');
+        setRadioStatus('Não foi possível conectar à rádio no momento. Isso pode ser devido a problemas na conexão com a internet ou a uma instabilidade temporária no servidor. Tente novamente mais tarde...');
       }
     }
 
@@ -141,10 +141,11 @@ const styles = StyleSheet.create({
     height: height * 0.2 ,
   },
   frequency: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ffffff',
-    textAlign: 'center',
+    textAlign: 'justify',
     height: height * 0.2,
+    paddingHorizontal: 16,
   },
 });
