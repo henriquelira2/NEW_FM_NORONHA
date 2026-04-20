@@ -1,11 +1,15 @@
 /* eslint-disable prettier/prettier */
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { View, Image, StyleSheet, Text, Dimensions } from 'react-native';
 import TrackPlayer, { Capability, State, Event } from 'react-native-track-player';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const MediaContext = createContext<{ play: () => void; pause: () => void; isPlaying: boolean } | null>(null);
+const MediaContext = createContext<{
+  play: () => void;
+  pause: () => void;
+  isPlaying: boolean;
+} | null>(null);
 
 export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -54,7 +58,9 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         });
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        setRadioStatus('Não foi possível conectar à rádio no momento. Isso pode ser devido a problemas na conexão com a internet ou a uma instabilidade temporária no servidor. Tente novamente mais tarde...');
+        setRadioStatus(
+          'Não foi possível conectar à rádio no momento. Isso pode ser devido a problemas na conexão com a internet ou a uma instabilidade temporária no servidor. Tente novamente mais tarde...'
+        );
       }
     }
 
@@ -94,13 +100,18 @@ export const MediaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           style={styles.gif}
         />
         <View style={styles.radio}>
-          {radioStatus === '96.9' && <Text style={styles.icon}  ><MaterialIcons name="music-note" size={24} color="white" /></Text>}
-          <Text style={styles.frequency} >{radioStatus}</Text>
-          {radioStatus === '96.9' && <Text style={styles.icon} ><MaterialIcons name="music-note" size={24} color="white" /></Text>}
-
+          {radioStatus === '96.9' && (
+            <Text style={styles.icon}>
+              <MaterialIcons name="music-note" size={24} color="white" />
+            </Text>
+          )}
+          <Text style={styles.frequency}>{radioStatus}</Text>
+          {radioStatus === '96.9' && (
+            <Text style={styles.icon}>
+              <MaterialIcons name="music-note" size={24} color="white" />
+            </Text>
+          )}
         </View>
-
-
       </View>
       {children}
     </MediaContext.Provider>
@@ -114,7 +125,7 @@ export const useMedia = () => {
   }
   return context;
 };
-const { width, height } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -132,7 +143,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
-    height: height * 0.1,
   },
 
   icon: {

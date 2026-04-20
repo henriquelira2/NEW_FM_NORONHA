@@ -28,7 +28,6 @@ export default function Sound() {
           <MediaProvider>
             <MediaControls />
           </MediaProvider>
-
         </ImageBackground>
       </SafeAreaView>
     </>

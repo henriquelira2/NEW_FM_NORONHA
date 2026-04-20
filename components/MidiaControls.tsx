@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Ionicons, FontAwesome, FontAwesome6 } from '@expo/vector-icons';
-import * as NavigationBar from 'expo-navigation-bar';
 import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -64,12 +63,6 @@ const MediaControls: React.FC = () => {
       },
     })
   ).current;
-
-  useEffect(() => {
-    if (modalVisible || modalVisibleSocial || ratingModalVisible) {
-      NavigationBar.setVisibilityAsync('hidden');
-    }
-  }, [modalVisible, modalVisibleSocial, ratingModalVisible]);
 
   const togglePlayPause = () => {
     if (isPlaying) {

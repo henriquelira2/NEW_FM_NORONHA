@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "FM Noronha",
-    "slug": "fm-noronha",
+    "slug": "FM-Noronha",
     "version": "1.0.0",
     "scheme": "fm-noronha",
     "web": {
@@ -11,6 +11,15 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
+          }
+        }
+      ],
       [
         "expo-dev-launcher",
         {
@@ -22,7 +31,6 @@
       "typedRoutes": true,
       "tsconfigPaths": true
     },
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -30,9 +38,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.gareky1.fmnoronha2",
@@ -45,15 +51,19 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gareky1.fmnoronha"
+      "package": "com.atdefn.FM.Noronha"
     },
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "15bd1f81-a7e3-4e80-b079-e6409f79047d"
+        "projectId": "48566ed8-cff0-4dbc-a64f-ce83a2c847bd"
       }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/48566ed8-cff0-4dbc-a64f-ce83a2c847bd"
     }
   }
 }

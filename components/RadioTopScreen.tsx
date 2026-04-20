@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
     marginTop: 10,
+    top: '10%',
   },
 
   progressContainer: {

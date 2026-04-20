@@ -19,6 +19,7 @@ export default function RootLayout() {
     NavigationBar.setBehaviorAsync('overlay-swipe');
     NavigationBar.setButtonStyleAsync('light');
   }, []);
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
