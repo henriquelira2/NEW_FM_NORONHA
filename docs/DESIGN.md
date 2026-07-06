@@ -138,6 +138,34 @@ const tuningOverlay = ['rgba(0, 255, 255, 0.18)', 'rgba(0, 255, 255, 0.04)', 'rg
 
 Quando a foto tiver muitos detalhes, aumente o overlay para manter contraste. Quando a foto for mais limpa, preserve mais cor do mar.
 
+## Capturas de Referencia
+
+As capturas abaixo documentam o resultado visual esperado do app em Android. Elas ficam em `assets/images/app-design/` com nomes sem espaco para facilitar uso em README, docs e changelogs.
+
+<table>
+  <tr>
+    <td width="33%"><img src="../assets/images/app-design/home-screen.jpg" alt="Home do FM Noronha" /></td>
+    <td width="33%"><img src="../assets/images/app-design/radio-screen.jpg" alt="Tela de radio do FM Noronha" /></td>
+    <td width="33%"><img src="../assets/images/app-design/about-screen.jpg" alt="Tela sobre o aplicativo" /></td>
+  </tr>
+  <tr>
+    <td><strong>home-screen.jpg</strong><br />Home com tartaruga, marca e CTA.</td>
+    <td><strong>radio-screen.jpg</strong><br />Player principal com paisagem, badge e controles.</td>
+    <td><strong>about-screen.jpg</strong><br />Tela institucional com fundo oceanico.</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="50%"><img src="../assets/images/app-design/schedule-bottom-sheet.jpg" alt="Bottom sheet de programacao" /></td>
+    <td width="50%"><img src="../assets/images/app-design/android-notification.jpg" alt="Notificacao Android" /></td>
+  </tr>
+  <tr>
+    <td><strong>schedule-bottom-sheet.jpg</strong><br />Modal de programacao em estilo bottom sheet.</td>
+    <td><strong>android-notification.jpg</strong><br />Notificacao Android com artwork da tartaruga.</td>
+  </tr>
+</table>
+
 ## Imagens do App
 
 <table>

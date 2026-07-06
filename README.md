@@ -43,19 +43,34 @@ FM Noronha e um app mobile com foco em escuta ao vivo, identidade visual de ilha
 <table>
   <tr>
     <td width="33%">
-      <img src="./assets/images/noronha-sea-turtle-vertical.jpg" alt="Fundo vertical com tartaruga marinha" />
+      <img src="./assets/images/app-design/home-screen.jpg" alt="Tela inicial do FM Noronha" />
     </td>
     <td width="33%">
-      <img src="./assets/images/noronha-dois-irmaos-hero.jpg" alt="Paisagem de Fernando de Noronha" />
+      <img src="./assets/images/app-design/radio-screen.jpg" alt="Tela de radio ao vivo do FM Noronha" />
     </td>
     <td width="33%">
-      <img src="./assets/images/noronha-underwater-vertical.jpg" alt="Imagem submarina vertical" />
+      <img src="./assets/images/app-design/about-screen.jpg" alt="Tela sobre o aplicativo" />
     </td>
   </tr>
   <tr>
     <td align="center"><strong>Home</strong><br />Fundo imersivo e CTA principal.</td>
     <td align="center"><strong>Radio</strong><br />Player com glass, badge e waveform.</td>
     <td align="center"><strong>Sobre</strong><br />Conteudo institucional com atmosfera oceanica.</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="./assets/images/app-design/schedule-bottom-sheet.jpg" alt="Modal de programacao da radio" />
+    </td>
+    <td width="50%">
+      <img src="./assets/images/app-design/android-notification.jpg" alt="Notificacao Android com player da radio" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Programacao</strong><br />Bottom sheet com cards e imagens de apoio.</td>
+    <td align="center"><strong>Notificacao</strong><br />Metadata, artwork e controles nativos Android.</td>
   </tr>
 </table>
 
@@ -151,15 +166,20 @@ Quando alterar `app.json`, dependencias nativas, plugins ou `runtimeVersion`, ge
 
 ## Assets
 
-| Asset                             | Uso principal                                  |
-| --------------------------------- | ---------------------------------------------- |
-| `noronha-sea-turtle-vertical.jpg` | Fundo da Home.                                 |
-| `noronha-underwater-vertical.jpg` | Card da radio na Home e contexto submarino.    |
-| `noronha-dois-irmaos-hero.jpg`    | Fundo principal da tela de radio.              |
-| `noronha-sea-turtle-wide.jpg`     | Header/modal e artwork da notificacao Android. |
-| `noronha-crab-detail.jpg`         | Imagem decorativa no modal de programacao.     |
-| `fm-noronha-cover-art.png`        | Capa/arte do player.                           |
-| `sistema-golfinho-logo.png`       | Marca institucional.                           |
+| Asset                                  | Uso principal                                  |
+| -------------------------------------- | ---------------------------------------------- |
+| `noronha-sea-turtle-vertical.jpg`      | Fundo da Home.                                 |
+| `noronha-underwater-vertical.jpg`      | Card da radio na Home e contexto submarino.    |
+| `noronha-dois-irmaos-hero.jpg`         | Fundo principal da tela de radio.              |
+| `noronha-sea-turtle-wide.jpg`          | Header/modal e artwork da notificacao Android. |
+| `noronha-crab-detail.jpg`              | Imagem decorativa no modal de programacao.     |
+| `fm-noronha-cover-art.png`             | Capa/arte do player.                           |
+| `sistema-golfinho-logo.png`            | Marca institucional.                           |
+| `app-design/home-screen.jpg`           | Screenshot da Home para README/design.         |
+| `app-design/radio-screen.jpg`          | Screenshot da tela de radio.                   |
+| `app-design/about-screen.jpg`          | Screenshot da tela Sobre.                      |
+| `app-design/schedule-bottom-sheet.jpg` | Screenshot do modal de programacao.            |
+| `app-design/android-notification.jpg`  | Screenshot da notificacao Android.             |
 
 ## Qualidade
 
