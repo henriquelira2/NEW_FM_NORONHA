@@ -1,13 +1,5 @@
-import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
-import { View } from 'react-native';
+import { Redirect } from 'expo-router';
 
 export default function NotFoundScreen() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/(tabs)/sound');
-  }, []);
-
-  return <View />;
+  return <Redirect href="/(tabs)/sound" />;
 }

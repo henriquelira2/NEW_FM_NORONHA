@@ -3,94 +3,128 @@ import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
-  Platform,
+  ImageBackground,
+  ScrollView,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
-  ScrollView,
-  ImageBackground,
+  View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { theme } from '~/constants/theme';
+
+const VERSION_TWO = [
+  ['Administrador Geral Adjunto', 'Sr. Virgílio de Almeida Ignácio de Oliveira'],
+  ['Gerência de Comunicação', 'Léa Renata Melo de Medeiros'],
+  ['Assessor de Comunicação', 'Domingos Sávio de Godoy'],
+  ['Superintendente Administrativo, Financeiro e TI', 'Eliandro Rafael Torres Ferreira'],
+  ['Gerência de T.I', 'Ari Alves de Lucena'],
+  ['Desenvolvedor', 'Henrique Lira da Silva'],
+  ['Desenvolvedor e Analista de Dados', 'Raimundo Marcelo Nogueira Coimbra'],
+] as const;
+
+const VERSION_ONE = [
+  ['Administradora Geral', 'Thallyta Figuerôa Peixoto'],
+  ['Gerência de Comunicação', 'Léa Renata Melo de Medeiros'],
+  ['Gerência de T.I', 'Ari Alves de Lucena'],
+  ['Desenvolvedor', 'Henrique Lira da Silva'],
+  ['Desenvolvedor e Analista de Dados', 'Raimundo Marcelo Nogueira Coimbra'],
+] as const;
+
+function VersionSection({
+  title,
+  date,
+  visible,
+  onPress,
+  people,
+}: {
+  title: string;
+  date: string;
+  visible: boolean;
+  onPress: () => void;
+  people: readonly (readonly [string, string])[];
+}) {
+  return (
+    <View style={styles.sectionCard}>
+      <TouchableOpacity onPress={onPress} style={styles.sectionHeader}>
+        <View>
+          <Text style={styles.sectionTitle}>{title}</Text>
+          <Text style={styles.subTitle}>{date}</Text>
+        </View>
+        <AntDesign name={visible ? 'up' : 'down'} size={18} color={theme.colors.primary} />
+      </TouchableOpacity>
+
+      {visible && (
+        <View style={styles.infoContainer}>
+          {people.map(([role, name]) => (
+            <View key={`${role}-${name}`} style={styles.personRow}>
+              <Text style={styles.role}>{role}</Text>
+              <Text selectable style={styles.name}>
+                {name}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
 
 export default function SobreApp() {
   const [versao1Visible, setVersao1Visible] = useState(false);
   const [versao2Visible, setVersao2Visible] = useState(false);
   const router = useRouter();
+
   return (
     <ImageBackground
-      source={require('../assets/images/Bacground-Radio.png')}
+      source={require('~/assets/images/noronha-island-extra.jpg')}
+      resizeMode="cover"
       style={styles.background}>
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-      <View style={styles.container}>
+      <StatusBar translucent backgroundColor="transparent" style="light" />
+      <View style={styles.overlay} />
+
+      <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <AntDesign name="arrowleft" size={30} color="black" />
+            <AntDesign name="arrowleft" size={25} color={theme.colors.primary} />
           </TouchableOpacity>
           <Text style={styles.title}>Sobre o Aplicativo</Text>
+          <View style={styles.headerSpacer} />
         </View>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.description}>
-            O FM NORONHA é o aplicativo que leva até você o melhor da ilha de Fernando de Noronha,
-            um arquipélago paradisíaco que tem as praias mais bonitas do mundo. Com este aplicativo,
-            você pode acompanhar as notícias, as músicas, as entrevistas e a agenda cultural da
-            ilha.
-          </Text>
 
-          <TouchableOpacity
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.heroCard}>
+            <Text style={styles.eyebrow}>FM NORONHA</Text>
+            <Text selectable style={styles.heroTitle}>
+              O som do paraíso
+            </Text>
+            <Text selectable style={styles.description}>
+              O FM Noronha leva até você o melhor da ilha de Fernando de Noronha: notícias, músicas,
+              entrevistas e agenda cultural em uma experiência feita para acompanhar a energia da
+              ilha.
+            </Text>
+          </View>
+
+          <VersionSection
+            date="31/05/2025"
+            people={VERSION_TWO}
+            title="Versão 2"
+            visible={versao1Visible}
             onPress={() => setVersao1Visible(!versao1Visible)}
-            style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Versão 2 </Text>
-            <Text style={styles.subTitle}>(31/05/2025) </Text>
-            <AntDesign name={versao1Visible ? 'up' : 'down'} size={20} color="black" />
-          </TouchableOpacity>
-          {versao1Visible && (
-            <View style={styles.infoContainer}>
-              <Text style={styles.role}>Administrador Geral Adjunto</Text>
-              <Text style={styles.name}>Sr. Virgílio de Almeida Ignácio de Oliveira</Text>
+          />
 
-              <Text style={styles.role}>Gerência de Comunicação</Text>
-              <Text style={styles.name}>Léa Renata Melo de Medeiros</Text>
-
-              <Text style={styles.role}>Assessor de Comunicação</Text>
-              <Text style={styles.name}>Domingos Sávio de Godoy</Text>
-
-              <Text style={styles.role}>Superintendente Administrativo, Financeiro e TI</Text>
-              <Text style={styles.name}>Eliandro Rafael Torres Ferreira</Text>
-
-              <Text style={styles.role}>Gerência de T.I</Text>
-              <Text style={styles.name}>Ari Alves de Lucena</Text>
-
-              <Text style={styles.role}>Desenvolvedor</Text>
-              <Text style={styles.name}>Henrique Lira da Silva</Text>
-
-              <Text style={styles.role}>Desenvolvedor e Analista de Dados</Text>
-              <Text style={styles.name}>Raimundo Marcelo Nogueira Coimbra</Text>
-            </View>
-          )}
-
-          <TouchableOpacity
+          <VersionSection
+            date="24/10/2024"
+            people={VERSION_ONE}
+            title="Versão 1"
+            visible={versao2Visible}
             onPress={() => setVersao2Visible(!versao2Visible)}
-            style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Versão 1</Text>
-            <Text style={styles.subTitle}>(24/10/2024) </Text>
-            <AntDesign name={versao2Visible ? 'up' : 'down'} size={20} color="black" />
-          </TouchableOpacity>
-          {versao2Visible && (
-            <View style={styles.infoContainer}>
-              <Text style={styles.role}>Administradora Geral</Text>
-              <Text style={styles.name}>Thallyta Figuerôa Peixoto</Text>
-              <Text style={styles.role}>Gerência de Comunicação</Text>
-              <Text style={styles.name}>Léa Renata Melo de Medeiros</Text>
-              <Text style={styles.role}>Gerência de T.I</Text>
-              <Text style={styles.name}>Ari Alves de Lucena</Text>
-              <Text style={styles.role}>Desenvolvedor</Text>
-              <Text style={styles.name}>Henrique Lira da Silva</Text>
-              <Text style={styles.role}>Desenvolvedor e Analista de Dados</Text>
-              <Text style={styles.name}>Raimundo Marcelo Nogueira Coimbra</Text>
-            </View>
-          )}
+          />
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </ImageBackground>
   );
 }
@@ -98,75 +132,119 @@ export default function SobreApp() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover',
   },
-  container: {
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(3, 8, 11, 0.66)',
+  },
+  safeArea: {
     flex: 1,
-    padding: 20,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    marginBottom: 20,
-    marginTop: 30,
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
   },
   backButton: {
-    marginRight: 20,
+    alignItems: 'center',
+    backgroundColor: theme.colors.glass,
+    borderColor: theme.colors.outlineMuted,
+    borderRadius: theme.radius.full,
+    borderWidth: 1,
+    height: 42,
+    justifyContent: 'center',
+    width: 42,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
+    color: theme.colors.white,
+    flex: 1,
+    fontSize: 20,
+    fontWeight: '900',
+    textAlign: 'center',
   },
-  subTitle: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: 'black',
-    marginLeft: 100,
+  headerSpacer: {
+    width: 42,
   },
-
   scrollContainer: {
-    width: '100%',
-    alignItems: 'center',
+    gap: 14,
+    padding: 18,
+    paddingBottom: 28,
+  },
+  heroCard: {
+    backgroundColor: theme.colors.glass,
+    borderColor: theme.colors.outlineMuted,
+    borderRadius: theme.radius.xl,
+    borderWidth: 1,
+    gap: 10,
+    padding: 20,
+  },
+  eyebrow: {
+    color: theme.colors.primary,
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 2.2,
+  },
+  heroTitle: {
+    color: theme.colors.white,
+    fontSize: 28,
+    fontWeight: '900',
   },
   description: {
-    fontSize: 18,
-    textAlign: 'justify',
-    color: '#000000',
-    marginBottom: 20,
+    color: theme.colors.onSurface,
+    fontSize: 16,
+    lineHeight: 24,
   },
-  sectionContainer: {
-    width: '100%',
+  sectionCard: {
+    backgroundColor: theme.colors.glass,
+    borderColor: theme.colors.outlineMuted,
+    borderRadius: theme.radius.lg,
+    borderWidth: 1,
+    overflow: 'hidden',
   },
   sectionHeader: {
-    width: '100%',
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#f8f8f8c5',
-    padding: 10,
-    borderTopStartRadius: 8,
-    borderTopRightRadius: 8,
-    marginTop: 10,
+    padding: 16,
   },
   sectionTitle: {
+    color: theme.colors.white,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '900',
+  },
+  subTitle: {
+    color: theme.colors.onSurfaceVariant,
+    fontSize: 13,
+    fontWeight: '700',
+    marginTop: 2,
   },
   infoContainer: {
-    width: '100%',
-    backgroundColor: '#f8f9fa',
-    padding: 10,
+    borderTopColor: theme.colors.outlineMuted,
+    borderTopWidth: 1,
+    padding: 14,
+  },
+  personRow: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderColor: theme.colors.outlineMuted,
+    borderRadius: theme.radius.md,
+    borderWidth: 1,
+    gap: 3,
+    marginBottom: 8,
+    padding: 12,
   },
   role: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
-    marginTop: 5,
+    color: theme.colors.secondary,
+    fontSize: 12,
+    fontWeight: '900',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
   name: {
+    color: theme.colors.onSurface,
     fontSize: 14,
-    color: '#555',
+    fontWeight: '600',
+    lineHeight: 20,
   },
 });

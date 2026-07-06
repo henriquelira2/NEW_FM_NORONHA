@@ -1,19 +1,20 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-empty-pattern */
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, useWindowDimensions } from 'react-native';
 import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 
-const size = 250;
 const strokeWidth = 10;
-const radius = (size - strokeWidth) / 2;
-const circumference = 2 * Math.PI * radius;
 const progress = 0.5;
-const angle = 2.2 * Math.PI * progress - Math.PI / 2;
-const indicatorX = size / 2 + radius * Math.cos(angle);
-const indicatorY = size / 2 + radius * Math.sin(angle);
-const image = require('../assets/images/RadioTop-icon.png');
+const image = require('~/assets/images/fm-noronha-cover-art.png');
 
-export const RadioTopScreen = ({}) => {
+export const RadioTopScreen = () => {
+  const { width } = useWindowDimensions();
+  const size = Math.min(width * 0.62, 250);
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const angle = 2.2 * Math.PI * progress - Math.PI / 2;
+  const indicatorX = size / 2 + radius * Math.cos(angle);
+  const indicatorY = size / 2 + radius * Math.sin(angle);
+  const imageSize = size * 0.8;
+
   return (
     <View style={styles.container}>
       <View style={styles.progressContainer}>
@@ -58,7 +59,15 @@ export const RadioTopScreen = ({}) => {
           />
         </Svg>
 
-        <View style={styles.imageContainer}>
+        <View
+          style={[
+            styles.imageContainer,
+            {
+              width: imageSize,
+              height: imageSize,
+              borderRadius: imageSize / 2,
+            },
+          ]}>
           <Image source={image} style={styles.image} resizeMode="cover" />
         </View>
       </View>
@@ -68,9 +77,10 @@ export const RadioTopScreen = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'flex-start',
-    marginTop: 10,
-    top: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 72,
+    paddingBottom: 24,
   },
 
   progressContainer: {
@@ -81,9 +91,6 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
     overflow: 'hidden',
     backgroundColor: 'white',
     justifyContent: 'center',

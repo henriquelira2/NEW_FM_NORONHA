@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import * as NavigationBar from 'expo-navigation-bar';
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
@@ -14,10 +13,18 @@ TrackPlayer.registerPlaybackService(() => playbackService);
 
 export default function RootLayout() {
   useEffect(() => {
-    NavigationBar.setVisibilityAsync('hidden');
-    NavigationBar.setBackgroundColorAsync('rgba(0,0,0,0)');
-    NavigationBar.setBehaviorAsync('overlay-swipe');
-    NavigationBar.setButtonStyleAsync('light');
+    const configureNavigationBar = async () => {
+      try {
+        await NavigationBar.setVisibilityAsync('hidden');
+        await NavigationBar.setBackgroundColorAsync('rgba(0,0,0,0)');
+        await NavigationBar.setBehaviorAsync('overlay-swipe');
+        await NavigationBar.setButtonStyleAsync('light');
+      } catch {
+        // Navigation bar APIs are platform-specific and can fail harmlessly on unsupported targets.
+      }
+    };
+
+    configureNavigationBar().catch(() => undefined);
   }, []);
 
   return (

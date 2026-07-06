@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
 import { Ionicons, FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,28 +11,55 @@ import {
   Animated,
   Linking,
   PanResponder,
+  ImageBackground,
+  Image,
 } from 'react-native';
 
 import { useMedia } from './MediaProvider';
 
-const MediaControls: React.FC = () => {
-  const { play, pause, isPlaying } = useMedia();
+import {
+  INDEPENDENT_PROGRAMS,
+  PLAY_STORE_URL,
+  SOCIAL_BUTTONS,
+  WEEKLY_PROGRAMMING,
+} from '~/constants/radio';
+import type { SocialButton } from '~/constants/radio';
+import { theme } from '~/constants/theme';
+
+type MediaControlsProps = {
+  compact?: boolean;
+};
+
+function SocialIcon({ button }: { button: SocialButton }) {
+  if (button.iconSet === 'ionicons') {
+    return <Ionicons name={button.iconName} size={30} color="white" />;
+  }
+
+  if (button.iconSet === 'fontawesome6') {
+    return <FontAwesome6 name={button.iconName} size={30} color="white" />;
+  }
+
+  return <FontAwesome name={button.iconName} size={30} color="white" />;
+}
+
+function ProgramRow({ title, meta }: { title: string; meta: string }) {
+  return (
+    <View style={styles.programRow}>
+      <Text style={styles.programTime}>{meta}</Text>
+      <Text selectable style={styles.programTitle}>
+        {title}
+      </Text>
+    </View>
+  );
+}
+
+const MediaControls: React.FC<MediaControlsProps> = ({ compact = false }) => {
+  const { play, pause, isPlaying, isLoading, statusMessage } = useMedia();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleSocial, setModalVisibleSocial] = useState(false);
   const [ratingModalVisible, setRatingModalVisible] = useState(false);
 
   const translateY = useRef(new Animated.Value(0)).current;
-
-  const [liveText, setLiveText] = useState('');
-
-  useEffect(() => {
-    const dayOfWeek = new Date().getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      setLiveText('🟡 Conteúdo pré-gravado');
-    } else {
-      setLiveText('🔴 Transmissão ao vivo');
-    }
-  }, []);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -65,103 +91,70 @@ const MediaControls: React.FC = () => {
   ).current;
 
   const togglePlayPause = () => {
+    if (isLoading) {
+      return;
+    }
+
     if (isPlaying) {
-      pause();
+      pause().catch(() => undefined);
     } else {
-      play();
+      play().catch(() => undefined);
     }
   };
 
-  const openPlayStore = () => {
-    Linking.openURL('https://play.google.com/store/apps/details?id=com.atdefn.FM.Noronha');
+  const openUrl = async (url: string) => {
+    try {
+      const canOpenUrl = await Linking.canOpenURL(url);
+
+      if (canOpenUrl) {
+        await Linking.openURL(url);
+      }
+    } catch {
+      // Link failures should not interrupt playback controls.
+    }
+  };
+
+  const openPlayStore = async () => {
+    await openUrl(PLAY_STORE_URL);
     setRatingModalVisible(false);
   };
 
-  const socialButtons = [
-    {
-      name: 'logo-facebook',
-      color: '#3b5998',
-      type: 'ionicons',
-      url: 'https://www.facebook.com/tvgolfinho/',
-    },
-    {
-      name: 'logo-whatsapp',
-      color: '#25d366',
-      type: 'ionicons',
-      url: 'https://wa.me/5581994883168',
-    },
-    {
-      name: 'x-twitter',
-      color: '#1da1f2',
-      type: 'FontAwesome6',
-      url: 'https://x.com/TvGolfinhoNoron?t=ofIpMIGN-BkabqsFsFAR6Q&s=08',
-    },
-    {
-      name: 'logo-instagram',
-      color: '#C13584',
-      type: 'ionicons',
-      url: 'https://www.instagram.com/sistemagolfinho.noronha/',
-    },
-    {
-      name: 'logo-youtube',
-      color: '#da0c0c',
-      type: 'ionicons',
-      url: 'https://www.youtube.com/c/SistemaGolfinhodeComunica%C3%A7%C3%A3o',
-    },
-    {
-      name: 'spotify',
-      color: '#1DB954',
-      type: 'fontawesome',
-      url: 'https://open.spotify.com/show/22X6bcFzCGPVh9HHDWr8FK?si=BxVk1rlhSteCWilDOLwdmA',
-    },
-  ];
-
-  const weeklyProgramming = [
-    { time: '8h45', program: 'Reprise do Jornal da Ilha' },
-    { time: '9h', program: 'Momentos de Alegria (Pedro Ribeiro)' },
-    { time: '12h', program: 'Pernambuco Esportivo (Rádio Sei)' },
-    { time: '13h', program: 'Pernambuco no Rádio (Rádio Sei)' },
-    { time: '14h', program: 'Balaio de Gato (Thânia Brito)' },
-    { time: '19h', program: 'Jornal da Ilha (Karlilian Magalhães e Karol Vieira)' },
-  ];
-
-  const independentPrograms = [
-    { day: 'Segunda-feira', time: '18h', program: 'Momentos com Cristo' },
-    { day: 'Terça-feira', time: '18h', program: 'A Caminho da Luz' },
-    { day: 'Quarta-feira', time: '19h30', program: 'Quarta Onda (Virgínia Anghinoni)' },
-    { day: 'Quinta-feira', time: '10h30', program: 'Momento da Gestão' },
-    { day: 'Quinta-feira', time: '18h', program: 'Voz que Liberta' },
-    { day: 'Quinta-feira', time: '20h', program: 'Pernambuco Cultural' },
-    { day: 'Sexta-feira', time: '18h', program: 'Rei Jesus' },
-    { day: 'Sexta-feira', time: '19h', program: 'B do Rock (Rafael Robles)' },
-    { day: 'Sexta-feira', time: '22h', program: 'Alma Leve (Elô Araújo)' },
-  ];
-
   return (
-    <View style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.nowPlaying} />
-        <Text style={styles.live}>{liveText}</Text>
-      </View>
-      <Text style={styles.songTitle}>Pensando em voz alta</Text>
+    <View style={[styles.card, compact && styles.compactCard]}>
+      <Text style={styles.overline}>PLAYER PRINCIPAL</Text>
+      <Text selectable style={[styles.songTitle, compact && styles.compactSongTitle]}>
+        {statusMessage ? 'Conexão instável' : 'Noronha ao vivo'}
+      </Text>
+      {statusMessage ? <Text style={styles.statusText}>{statusMessage}</Text> : null}
 
       <View style={styles.controls}>
         <TouchableOpacity style={styles.iconButton} onPress={() => setRatingModalVisible(true)}>
-          <FontAwesome name="heart-o" size={24} color="#333" />
+          <FontAwesome name="heart-o" size={24} color={theme.colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton} onPress={() => setModalVisibleSocial(true)}>
-          <Ionicons name="share-social" size={24} color="#333" />
+          <Ionicons name="share-social" size={24} color={theme.colors.primary} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.playButton} onPress={togglePlayPause}>
-          <Ionicons name={isPlaying ? 'pause' : 'play'} size={32} color="white" />
+        <TouchableOpacity
+          disabled={isLoading}
+          style={[
+            styles.playButton,
+            compact && styles.compactPlayButton,
+            isLoading && styles.playButtonDisabled,
+          ]}
+          onPress={togglePlayPause}>
+          <Ionicons
+            name={isLoading ? 'hourglass' : isPlaying ? 'pause' : 'play'}
+            size={32}
+            color="white"
+          />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.iconButton} onPress={() => setModalVisible(true)}>
-          <Ionicons name="list" size={24} color="#333" />
+          <Ionicons name="list" size={24} color={theme.colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/modal')}>
-          <Ionicons name="information-sharp" size={24} color="#333" />
+          <Ionicons name="information-sharp" size={24} color={theme.colors.primary} />
         </TouchableOpacity>
       </View>
 
@@ -170,24 +163,48 @@ const MediaControls: React.FC = () => {
         transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>📻 Programação da Rádio</Text>
-            <ScrollView style={styles.scrollContainer}>
-              <Text style={styles.sectionTitle}>📅 Programação Semanal</Text>
-              {weeklyProgramming.map((item, index) => (
-                <Text key={index} style={styles.programItem}>
-                  {item.time} - {item.program}
-                </Text>
+        <View style={styles.sheetOverlay}>
+          <View style={styles.scheduleSheet}>
+            <View style={styles.sheetHandle} />
+            <ImageBackground
+              source={require('~/assets/images/noronha-sea-turtle-wide.jpg')}
+              resizeMode="cover"
+              style={styles.scheduleHero}
+              imageStyle={styles.scheduleHeroImage}>
+              <View style={styles.scheduleHeroOverlay} />
+              <Image
+                source={require('~/assets/images/noronha-crab-detail.jpg')}
+                resizeMode="cover"
+                style={styles.crabBadge}
+              />
+              <Text style={styles.modalTitle}>Programação da Rádio</Text>
+              <Text style={styles.modalSubtitle}>Acompanhe os horários da FM Noronha</Text>
+            </ImageBackground>
+
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              style={styles.scrollContainer}
+              showsVerticalScrollIndicator={false}>
+              <Text style={styles.sectionTitle}>Programação Semanal</Text>
+              {WEEKLY_PROGRAMMING.map((item) => (
+                <ProgramRow
+                  key={`${item.time}-${item.program}`}
+                  meta={item.time}
+                  title={item.program}
+                />
               ))}
-              <Text style={styles.sectionTitle}>🎙️ Programas Independentes</Text>
-              {independentPrograms.map((item, index) => (
-                <Text key={index} style={styles.programItem}>
-                  {item.day}, {item.time} - {item.program}
-                </Text>
+              <Text style={styles.sectionTitle}>Programas Independentes</Text>
+              {INDEPENDENT_PROGRAMS.map((item) => (
+                <ProgramRow
+                  key={`${item.day}-${item.time}-${item.program}`}
+                  meta={`${item.day} • ${item.time}`}
+                  title={item.program}
+                />
               ))}
             </ScrollView>
-            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
+            <TouchableOpacity
+              style={styles.sheetCloseButton}
+              onPress={() => setModalVisible(false)}>
               <Text style={styles.closeButtonText}>Fechar</Text>
             </TouchableOpacity>
           </View>
@@ -230,26 +247,17 @@ const MediaControls: React.FC = () => {
             <View style={styles.dragIndicator} />
 
             <View style={styles.socialGrid}>
-              {socialButtons.map((button, index) => (
-                <View key={index} style={styles.socialItem}>
+              {SOCIAL_BUTTONS.map((button) => (
+                <View key={button.label} style={styles.socialItem}>
                   <TouchableOpacity
                     style={[styles.socialButton, { backgroundColor: button.color }]}
-                    onPress={() => {
-                      Linking.openURL(button.url);
+                    onPress={async () => {
+                      await openUrl(button.url);
                       setModalVisibleSocial(false);
                     }}>
-                    {button.type === 'ionicons' ? (
-                      <Ionicons name={button.name as any} size={30} color="white" />
-                    ) : button.type === 'FontAwesome6' ? (
-                      <FontAwesome6 name={button.name} size={30} color="white" />
-                    ) : (
-                      <FontAwesome name={button.name as any} size={30} color="white" />
-                    )}
+                    <SocialIcon button={button} />
                   </TouchableOpacity>
-                  <Text style={styles.socialButtonText}>
-                    {button.name.replace('logo-', '').replace('x-', '').charAt(0).toUpperCase() +
-                      button.name.replace('logo-', '').replace('x-', '').slice(1)}
-                  </Text>
+                  <Text style={styles.socialButtonText}>{button.label}</Text>
                 </View>
               ))}
             </View>
@@ -262,92 +270,204 @@ const MediaControls: React.FC = () => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    backgroundColor: theme.colors.glass,
+    borderColor: theme.colors.outlineMuted,
+    borderWidth: 1,
+    paddingHorizontal: 20,
+    paddingTop: 18,
+    paddingBottom: 24,
+    borderRadius: theme.radius.xl,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.28,
     shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 10,
+    shadowRadius: 18,
     elevation: 5,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginTop: 10,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '100%',
-    marginBottom: 5,
   },
-  nowPlaying: {
-    fontSize: 12,
-    color: '#888',
+  compactCard: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 14,
   },
-  live: {
-    fontSize: 12,
-    color: '#3067ff',
-    fontWeight: 'bold',
-    paddingBottom: 5,
+  overline: {
+    color: theme.colors.outline,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 2.2,
+    marginBottom: 6,
   },
   songTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    color: theme.colors.onSurface,
+    fontSize: 20,
+    fontWeight: '800',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  compactSongTitle: {
+    fontSize: 17,
+    marginBottom: 12,
+  },
+  statusText: {
+    color: theme.colors.onSurfaceVariant,
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 14,
+    textAlign: 'center',
   },
   controls: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 13,
+    justifyContent: 'center',
+    gap: 10,
+    width: '100%',
   },
   iconButton: {
-    backgroundColor: '#F5F5F5',
-    padding: 15,
-    borderRadius: 50,
+    backgroundColor: theme.colors.glassSoft,
+    borderColor: theme.colors.outlineMuted,
+    borderWidth: 1,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   playButton: {
-    backgroundColor: '#5a9cff',
-    padding: 20,
-    borderRadius: 50,
+    backgroundColor: theme.colors.secondaryContainer,
+    width: 68,
+    height: 68,
+    borderRadius: 34,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  compactPlayButton: {
+    height: 58,
+    width: 58,
+    borderRadius: 29,
+  },
+  playButtonDisabled: {
+    opacity: 0.72,
   },
 
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: theme.colors.deepOverlay,
+  },
+  sheetOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: theme.colors.deepOverlay,
+  },
+  scheduleSheet: {
+    backgroundColor: theme.colors.surfaceContainer,
+    borderColor: theme.colors.outlineMuted,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    borderWidth: 1,
+    maxHeight: '86%',
+    overflow: 'hidden',
+    paddingBottom: 18,
+    width: '100%',
+  },
+  sheetHandle: {
+    alignSelf: 'center',
+    backgroundColor: theme.colors.outline,
+    borderRadius: 999,
+    height: 5,
+    marginTop: 10,
+    opacity: 0.55,
+    position: 'absolute',
+    top: 0,
+    width: 44,
+    zIndex: 2,
+  },
+  scheduleHero: {
+    minHeight: 112,
+    justifyContent: 'flex-end',
+    padding: 18,
+    paddingTop: 26,
+  },
+  scheduleHeroImage: {
+    opacity: 0.55,
+  },
+  scheduleHeroOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(14, 21, 19, 0.56)',
+  },
+  crabBadge: {
+    borderColor: theme.colors.outlineMuted,
+    borderRadius: theme.radius.md,
+    borderWidth: 1,
+    height: 58,
+    position: 'absolute',
+    right: 18,
+    top: 24,
+    width: 82,
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surfaceContainer,
+    borderColor: theme.colors.outlineMuted,
+    borderWidth: 1,
     padding: 20,
     borderRadius: 10,
     width: '80%',
+    maxWidth: 420,
     maxHeight: '80%',
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 18,
+    color: theme.colors.onSurface,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 4,
     marginTop: 15,
+  },
+  modalSubtitle: {
+    color: theme.colors.onSurfaceVariant,
+    fontSize: 13,
   },
   scrollContainer: {
-    maxHeight: 300,
+    maxHeight: 430,
+  },
+  scrollContent: {
+    padding: 18,
+    paddingBottom: 8,
   },
   sectionTitle: {
-    fontSize: 16,
+    color: theme.colors.primary,
+    fontSize: 15,
     fontWeight: 'bold',
-    marginTop: 15,
-    marginBottom: 15,
+    marginTop: 10,
+    marginBottom: 10,
   },
-  programItem: {
-    fontSize: 16,
-    paddingVertical: 5,
+  programRow: {
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderColor: theme.colors.outlineMuted,
+    borderRadius: theme.radius.md,
+    borderWidth: 1,
+    gap: 4,
+    marginBottom: 8,
+    padding: 12,
+  },
+  programTime: {
+    color: theme.colors.secondary,
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+  },
+  programTitle: {
+    color: theme.colors.onSurface,
+    fontSize: 15,
+    fontWeight: '600',
+    lineHeight: 20,
   },
   closeButton: {
     marginTop: 15,
-    backgroundColor: '#5a9cff',
+    backgroundColor: theme.colors.secondaryContainer,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -356,34 +476,47 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  sheetCloseButton: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: theme.colors.secondaryContainer,
+    borderRadius: theme.radius.full,
+    marginTop: 8,
+    paddingHorizontal: 28,
+    paddingVertical: 12,
+  },
   modalText: {
+    color: theme.colors.onSurfaceVariant,
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 15,
   },
   modalButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    gap: 12,
     width: '100%',
   },
   cancelButton: {
     marginTop: 15,
-    backgroundColor: '#ccc',
+    backgroundColor: theme.colors.glassSoft,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   cancelButtonText: {
-    color: 'black',
+    color: theme.colors.onSurface,
     fontWeight: 'bold',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: theme.colors.deepOverlay,
     justifyContent: 'flex-end',
   },
   modalContainerSocial: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.surfaceContainer,
+    borderColor: theme.colors.outlineMuted,
+    borderWidth: 1,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -393,7 +526,7 @@ const styles = StyleSheet.create({
   dragIndicator: {
     width: 40,
     height: 5,
-    backgroundColor: '#ccc',
+    backgroundColor: theme.colors.outline,
     borderRadius: 5,
     alignSelf: 'center',
     marginBottom: 15,
@@ -402,12 +535,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    rowGap: 20,
   },
   socialItem: {
     width: '30%',
     alignItems: 'center',
-    marginBottom: 20,
   },
   socialButton: {
     width: 60,
@@ -419,15 +551,8 @@ const styles = StyleSheet.create({
   },
   socialButtonText: {
     fontSize: 12,
-    color: '#333',
+    color: theme.colors.onSurface,
     textAlign: 'center',
-  },
-  cancelButtonSocial: {
-    backgroundColor: '#f0f0f0',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
   },
 });
 
