@@ -2,7 +2,8 @@
   "expo": {
     "name": "FM Noronha",
     "slug": "FM-Noronha",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "newArchEnabled": false,
     "scheme": "fm-noronha",
     "web": {
       "bundler": "metro",
@@ -19,12 +20,6 @@
             "targetSdkVersion": 35,
             "buildToolsVersion": "35.0.0"
           }
-        }
-      ],
-      [
-        "expo-dev-launcher",
-        {
-          "launchMode": "most-recent"
         }
       ]
     ],
@@ -58,11 +53,14 @@
       "router": {
         "origin": false
       },
+      "compatibility": {
+        "newArchDisabledReason": "Mantido desativado por compatibilidade com react-native-track-player 4.1.1 e patch-package até validação de upgrade."
+      },
       "eas": {
         "projectId": "48566ed8-cff0-4dbc-a64f-ce83a2c847bd"
       }
     },
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": "1.0.1",
     "updates": {
       "url": "https://u.expo.dev/48566ed8-cff0-4dbc-a64f-ce83a2c847bd"
     }
