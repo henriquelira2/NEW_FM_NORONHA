@@ -29,6 +29,13 @@
 
 FM Noronha e um app mobile com foco em escuta ao vivo, identidade visual de ilha e controles nativos de midia no Android. A experiencia atual usa fundo fotografico, cards com efeito glass, status de transmissao e assets inspirados no ambiente de Fernando de Noronha.
 
+## Repositorios
+
+| Projeto | Repositorio |
+| ------- | ----------- |
+| Mobile | [henriquelira2/NEW_FM_NORONHA](https://github.com/henriquelira2/NEW_FM_NORONHA) |
+| Web | [henriquelira2/fm-noronha-web](https://github.com/henriquelira2/fm-noronha-web) |
+
 | Area          | Descricao                                                                         |
 | ------------- | --------------------------------------------------------------------------------- |
 | Radio ao vivo | Stream `https://8136.brasilstream.com.br/stream` via `react-native-track-player`. |
@@ -201,6 +208,8 @@ Testes manuais recomendados:
 
 ## Links Uteis
 
+- [Repositorio mobile](https://github.com/henriquelira2/NEW_FM_NORONHA)
+- [Repositorio web](https://github.com/henriquelira2/fm-noronha-web)
 - [Documentacao de design](./docs/DESIGN.md)
 - [Documentacao de release e EAS Update](./docs/RELEASE.md)
 - [Expo EAS Update](https://docs.expo.dev/eas-update/introduction/)
